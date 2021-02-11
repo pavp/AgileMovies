@@ -9,7 +9,7 @@ export const fetchMoviesPopular = createAsyncThunk(
         ...values,
         signin: false,
       });
-      console.log(response.data);
+      console.log("movies");
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -29,7 +29,7 @@ export const fetchMoviesNow = createAsyncThunk(
         ...values,
         signin: false,
       });
-      console.log(response.data);
+      console.log("movies");
       return response.data;
     } catch (error) {
       return rejectWithValue(

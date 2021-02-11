@@ -71,7 +71,9 @@ export const authSlice = createSlice({
       state.login.status = "idle";
     },
     refreshToken: (state, action) => {
-      state.payload = action.payload.payload;
+      console.log("ESTADO EN REFRESH TOKEN", action.payload.payload.token);
+      console.log("ESTADO EN REFRESH TOKENnnnnn", state.payload.token);
+      state.payload.token = action.payload.payload.token;
     },
   },
   extraReducers: {
