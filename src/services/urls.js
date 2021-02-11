@@ -1,6 +1,7 @@
-// PRODUCTS
-export const GET_PRODUCTS = "/getProducts";
-export const GET_PRODUCT_BY_ID = "/getProductById";
+// MOVIES
+export const GET_MOVIES_POPULAR = "/movies/popular";
+export const GET_MOVIES_NOW = "/movies/now_playing";
 
 // AUTH
 export const SIGN_IN = "/auth/login";
+export const PROFILE = "/user/me";

@@ -1,11 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import API from "@services";
 
-export const fetchAuthLogin = createAsyncThunk(
-  "auth/fetchAuthLogin",
+export const fetchMoviesPopular = createAsyncThunk(
+  "movies/fetchMoviesPopular",
   async (values, { rejectWithValue }) => {
     try {
-      const response = await API.auth.signIn({ ...values, signin: true });
+      const response = await API.movies.getMoviesPopular({
+        ...values,
+        signin: false,
+      });
       console.log(response.data);
       return response.data;
     } catch (error) {
@@ -18,11 +21,15 @@ export const fetchAuthLogin = createAsyncThunk(
   }
 );
 
-export const fetchAuthProfile = createAsyncThunk(
-  "auth/fetchAuthProfile",
+export const fetchMoviesNow = createAsyncThunk(
+  "movies/fetchMoviesNow",
   async (values, { rejectWithValue }) => {
     try {
-      const response = await API.auth.profile({ signin: false });
+      const response = await API.movies.getMoviesNow({
+        ...values,
+        signin: false,
+      });
+      console.log(response.data);
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -35,22 +42,17 @@ export const fetchAuthProfile = createAsyncThunk(
 );
 
 export const initialState = {
-  payload: undefined,
-  user: undefined,
-  login: {
+  popular: {
     loading: false,
     error: undefined,
     status: "idle",
+    moviesPopular: [],
   },
-  profile: {
+  now: {
     loading: false,
     error: undefined,
     status: "idle",
-  },
-  refresh: {
-    loading: false,
-    error: undefined,
-    status: "idle",
+    moviesNow: [],
   },
 };
 
@@ -70,43 +72,39 @@ export const authSlice = createSlice({
       state.login.error = "";
       state.login.status = "idle";
     },
-    refreshToken: (state, action) => {
-      state.payload = action.payload.payload;
-    },
   },
   extraReducers: {
-    [fetchAuthLogin.pending]: (state) => {
+    [fetchMoviesPopular.pending]: (state) => {
       state.login.loading = true;
       state.login.status = "loading";
     },
-    [fetchAuthLogin.rejected]: (state, action) => {
+    [fetchMoviesPopular.rejected]: (state, action) => {
       state.login.loading = false;
       state.login.status = "failed";
       state.login.error = action.payload;
     },
-    [fetchAuthLogin.fulfilled]: (state, action) => {
+    [fetchMoviesPopular.fulfilled]: (state, action) => {
       state.login.loading = false;
       state.login.status = "succeeded";
-      state.user = action.payload.data.user;
-      state.payload = action.payload.data.payload;
+      state.moviesPopular = action.payload.data;
     },
-    [fetchAuthProfile.pending]: (state) => {
+    [fetchMoviesNow.pending]: (state) => {
       state.profile.loading = true;
       state.profile.status = "loading";
     },
-    [fetchAuthProfile.rejected]: (state, action) => {
+    [fetchMoviesNow.rejected]: (state, action) => {
       state.profile.loading = false;
       state.profile.status = "failed";
       state.profile.error = action.payload;
     },
-    [fetchAuthProfile.fulfilled]: (state, action) => {
+    [fetchMoviesNow.fulfilled]: (state, action) => {
       state.profile.loading = false;
       state.profile.status = "succeeded";
-      state.user = action.payload.data;
+      state.moviesNow = action.payload.data;
     },
   },
 });
 
-export const { cleanStateLoading, logOut, refreshToken } = authSlice.actions;
+export const { cleanStateLoading, logOut } = authSlice.actions;
 
 export default authSlice.reducer;

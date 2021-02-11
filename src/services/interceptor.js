@@ -2,14 +2,14 @@ import axios from "axios";
 import jwtDecode from "jwt-decode";
 import API from "./config";
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { refreshToken } from "@store/actions/auth";
 
 const interceptorRequest = async (request, store) => {
   if (request.data && request.data.signin) {
     return request;
   }
 
-  const accessToken = store.getState().payload?.token;
+  const accessToken = store.getState().auth?.payload.token;
   const cancelToken = axios.CancelToken;
   const source = cancelToken.source();
   request.cancelToken = source.token;
@@ -38,6 +38,32 @@ const interceptorRequest = async (request, store) => {
   return request;
 };
 
+const refreshTokenService = async (token, config, store) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .post("http://161.35.140.236:9005/api/auth/refresh", {
+        refresh_token: token,
+      })
+      .then((res) => {
+        store.dispatch(refreshToken(res.data.data));
+        config.headers.Authorization = `Bearer ${res.data.data.payload.token}`;
+        axios
+          .request(config)
+          .then((result) => {
+            return resolve(result);
+          })
+          .catch((err) => {
+            console.log(err);
+            return reject(err);
+          });
+      })
+      .catch((err) => {
+        console.log("err", err);
+        return reject(err);
+      });
+  });
+};
+
 const interceptorResponse = (response, store) => {
   if (response.status === 201) {
     console.log("success 201");
@@ -47,7 +73,22 @@ const interceptorResponse = (response, store) => {
 };
 
 const handleErrorResponse = async (error, store) => {
-  console.log("error", error);
+  if (error.config && error.response?.status === 401) {
+    console.log("ajaaa error 401");
+    return new Promise((resolve, reject) => {
+      refreshTokenService(
+        store.getState().auth?.payload.refresh_token,
+        error.config,
+        store
+      )
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
   return Promise.reject(error);
 };
 
