@@ -6,6 +6,8 @@ import { useSelector } from "react-redux";
 
 import AppScreens from "@screens/app";
 import AuthScreens from "@screens/auth";
+import Header from "@components/header/Header";
+import HeaderBackButton from "@components/headerBackButton/HeaderBackButton";
 
 const AppStack = createStackNavigator();
 const AppNavigator = () => {
@@ -14,9 +16,12 @@ const AppNavigator = () => {
       <AppStack.Screen
         name="Home"
         component={AppScreens.Home}
-        options={() => ({
-          headerShown: false,
-        })}
+        options={{
+          headerLeft: () => <HeaderBackButton />,
+          headerTitle: () => undefined,
+          headerRight: () => <Header />,
+          headerStyle: { backgroundColor: "#191B1E" },
+        }}
       />
     </AppStack.Navigator>
   );

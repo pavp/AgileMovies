@@ -1,15 +1,11 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-  safeAreaView: {
-    flex: 1,
-    backgroundColor: "#191B1E",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: {
+  text: {
     color: "#99aab5",
-    fontSize: 40,
+    fontSize: 18,
+    marginHorizontal: 16,
+    paddingHorizontal: 4,
     textAlign: "center",
   },
 });

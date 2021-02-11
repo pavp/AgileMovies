@@ -23,7 +23,10 @@ const Home = () => {
     dispatch(logOut());
   };
   return (
-    <SafeAreaView style={styles.safeAreaView}>
+    <SafeAreaView
+      style={styles.safeAreaView}
+      edges={["bottom", "right", "left"]}
+    >
       {/* <Button text={"Logout"} onPress={logOutHandler} /> */}
       <PopularMovies />
     </SafeAreaView>
