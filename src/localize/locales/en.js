@@ -17,4 +17,8 @@ export default {
     hello: "Hello",
     back: "Back",
   },
+  rules: {
+    username: "Username is required",
+    password: "Password is required",
+  },
 };

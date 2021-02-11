@@ -17,4 +17,8 @@ export default {
     hello: "Hola",
     back: "Volver",
   },
+  rules: {
+    username: "Debe introducir el nombre de usuario",
+    password: "Debe introducir la contraseña",
+  },
 };
