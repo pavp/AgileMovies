@@ -9,7 +9,6 @@ export const fetchMoviesPopular = createAsyncThunk(
         ...values,
         signin: false,
       });
-      console.log("movies");
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -29,7 +28,6 @@ export const fetchMoviesNow = createAsyncThunk(
         ...values,
         signin: false,
       });
-      console.log("movies");
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -57,7 +55,7 @@ export const initialState = {
 };
 
 export const authSlice = createSlice({
-  name: "users",
+  name: "movies",
   initialState,
   reducers: {
     cleanStateLoading: (state) => {
@@ -75,32 +73,32 @@ export const authSlice = createSlice({
   },
   extraReducers: {
     [fetchMoviesPopular.pending]: (state) => {
-      state.login.loading = true;
-      state.login.status = "loading";
+      state.popular.loading = true;
+      state.popular.status = "loading";
     },
     [fetchMoviesPopular.rejected]: (state, action) => {
-      state.login.loading = false;
-      state.login.status = "failed";
-      state.login.error = action.payload;
+      state.popular.loading = false;
+      state.popular.status = "failed";
+      state.popular.error = action.payload;
     },
     [fetchMoviesPopular.fulfilled]: (state, action) => {
-      state.login.loading = false;
-      state.login.status = "succeeded";
-      state.moviesPopular = action.payload.data;
+      state.popular.loading = false;
+      state.popular.status = "succeeded";
+      state.popular.moviesPopular = action.payload;
     },
     [fetchMoviesNow.pending]: (state) => {
-      state.profile.loading = true;
-      state.profile.status = "loading";
+      state.now.loading = true;
+      state.now.status = "loading";
     },
     [fetchMoviesNow.rejected]: (state, action) => {
-      state.profile.loading = false;
-      state.profile.status = "failed";
-      state.profile.error = action.payload;
+      state.now.loading = false;
+      state.now.status = "failed";
+      state.now.error = action.payload;
     },
     [fetchMoviesNow.fulfilled]: (state, action) => {
-      state.profile.loading = false;
-      state.profile.status = "succeeded";
-      state.moviesNow = action.payload.data;
+      state.now.loading = false;
+      state.now.status = "succeeded";
+      state.now.moviesNow = action.payload;
     },
   },
 });

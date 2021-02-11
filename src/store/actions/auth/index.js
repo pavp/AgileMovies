@@ -6,7 +6,6 @@ export const fetchAuthLogin = createAsyncThunk(
   async (values, { rejectWithValue }) => {
     try {
       const response = await API.auth.signIn({ ...values, signin: true });
-      console.log(response.data);
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -71,8 +70,6 @@ export const authSlice = createSlice({
       state.login.status = "idle";
     },
     refreshToken: (state, action) => {
-      console.log("ESTADO EN REFRESH TOKEN", action.payload.payload.token);
-      console.log("ESTADO EN REFRESH TOKENnnnnn", state.payload.token);
       state.payload.token = action.payload.payload.token;
     },
   },
