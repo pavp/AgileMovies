@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { StatusBar } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./styles";
@@ -23,6 +24,11 @@ const Home = () => {
       style={styles.safeAreaView}
       edges={["bottom", "right", "left"]}
     >
+      <StatusBar
+        barStyle={"light-content"}
+        translucent
+        backgroundColor="transparent"
+      />
       <PopularMovies />
     </SafeAreaView>
   );

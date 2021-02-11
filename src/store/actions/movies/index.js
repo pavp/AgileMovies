@@ -92,6 +92,22 @@ export const authSlice = createSlice({
       state.actors.status = "idle";
       state.actors.actors = [];
     },
+    cleanMovies: (state) => {
+      state.popular.loading = false;
+      state.popular.error = "";
+      state.popular.status = "idle";
+      state.popular.baseUrl = "";
+      state.popular.movies = [];
+      state.popular.skip = 1;
+      state.popular.endReached = false;
+      state.now.loading = false;
+      state.now.error = "";
+      state.now.status = "idle";
+      state.now.baseUrl = "";
+      state.now.movies = [];
+      state.now.skip = 1;
+      state.now.endReached = false;
+    },
   },
   extraReducers: {
     [fetchMoviesPopular.pending]: (state) => {
@@ -145,6 +161,6 @@ export const authSlice = createSlice({
   },
 });
 
-export const { cleanActors } = authSlice.actions;
+export const { cleanActors, cleanMovies } = authSlice.actions;
 
 export default authSlice.reducer;

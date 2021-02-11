@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flexDirection: "row",
+    marginHorizontal: 8,
   },
 });
 
