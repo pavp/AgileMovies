@@ -5,6 +5,7 @@ import styles from "./styles";
 import { useDispatch } from "react-redux";
 import { logOut } from "@store/actions/auth";
 import { useNavigation } from "@react-navigation/native";
+import localize from "@localize";
 
 const HeaderBackButton = ({ back }) => {
   const navigation = useNavigation();
@@ -16,7 +17,7 @@ const HeaderBackButton = ({ back }) => {
 
   return (
     <Pressable onPress={backHandler}>
-      <Text style={styles.text}>{"<  Volver"}</Text>
+      <Text style={styles.text}>{`<  ${localize.t("header.back")}`}</Text>
     </Pressable>
   );
 };

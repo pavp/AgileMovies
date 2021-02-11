@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { View, Text } from "react-native";
 import { useForm } from "react-hook-form";
-// import localize from '@i18n';
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAuthLogin, cleanStateLoading } from "@store/actions/auth";
 import Form from "@components/form/Form";
@@ -9,6 +8,7 @@ import Input from "@components/input/Input";
 import Button from "@components/button/Button";
 import rules from "@utility/rules";
 import DropdownAlert from "react-native-dropdownalert";
+import localize from "@localize";
 
 import styles from "./styles";
 
@@ -18,7 +18,7 @@ const FormSignIn = () => {
     shouldUnregister: false,
   });
 
-  const { loading, status, error } = useSelector((state) => state.auth.login);
+  const { status, error } = useSelector((state) => state.auth.login);
   const dropDownAlertRef = useRef(null);
 
   useEffect(() => {
@@ -36,10 +36,18 @@ const FormSignIn = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>AGILE MOVIES</Text>
+      <Text style={styles.title}>{localize.t("signIn.agileMovies")}</Text>
       <Form {...{ trigger, register, setValue, rules, errors }}>
-        <Input name="username" placeholder={"username"} autoCapitalize="none" />
-        <Input name="password" secureTextEntry placeholder={"password"} />
+        <Input
+          name="username"
+          placeholder={localize.t("signIn.username")}
+          autoCapitalize="none"
+        />
+        <Input
+          name="password"
+          secureTextEntry
+          placeholder={localize.t("signIn.password")}
+        />
         <View style={styles.buttonContainer}>
           <Button text={"Login"} onPress={onSubmit} />
         </View>

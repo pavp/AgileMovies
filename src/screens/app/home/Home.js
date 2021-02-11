@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Button from "@components/button/Button";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./styles";
-import { logOut, fetchAuthProfile } from "@store/actions/auth";
+import { fetchAuthProfile } from "@store/actions/auth";
 import { fetchMoviesPopular, fetchMoviesNow } from "@store/actions/movies";
 
 import PopularMovies from "@components/popularMovies/PopularMovies";
@@ -19,15 +18,11 @@ const Home = () => {
     dispatch(fetchMoviesNow({ page: skipNow }));
   }, [dispatch]);
 
-  const logOutHandler = () => {
-    dispatch(logOut());
-  };
   return (
     <SafeAreaView
       style={styles.safeAreaView}
       edges={["bottom", "right", "left"]}
     >
-      {/* <Button text={"Logout"} onPress={logOutHandler} /> */}
       <PopularMovies />
     </SafeAreaView>
   );

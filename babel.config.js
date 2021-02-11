@@ -21,7 +21,7 @@ module.exports = {
           "@screens": "./src/screens",
           "@navigation": "./src/navigation",
           "@store": "./src/store",
-          "@i18n": "./src/i18n",
+          "@localize": "./src/localize",
           "@services": "./src/services",
           "@interceptor": "./src/services/interceptor",
           "@utility": "./src/utility",

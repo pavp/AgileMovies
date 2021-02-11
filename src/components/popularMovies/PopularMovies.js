@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import { FlatList, Image, View, Pressable, Text } from "react-native";
 import styles from "./styles";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,16 +27,24 @@ const PopularMovies = () => {
     navigation.navigate("Detail", { movie: item });
   };
 
-  const renderItem = ({ item }) => (
-    <Pressable style={styles.pressable} onPress={() => onClickHanler(item)}>
-      <Image
-        source={{ uri: imageBaseUrl + item.backdrop_path }}
-        style={styles.image}
-      />
+  const renderItem = ({ item }) => <Item item={item} />;
 
-      <Text style={styles.titleItem}>{item.original_title}</Text>
-    </Pressable>
-  );
+  const Item = React.memo(({ item }) => {
+    return (
+      <Pressable style={styles.pressable} onPress={() => onClickHanler(item)}>
+        <Image
+          source={{ uri: imageBaseUrl + item.backdrop_path }}
+          style={styles.image}
+        />
+
+        <Text style={styles.titleItem}>{item.original_title}</Text>
+      </Pressable>
+    );
+  });
+
+  Item.propTypes = {
+    item: PropTypes.object.isRequired,
+  };
 
   const loadMoreData = () => {
     if (!endReached && !firsTime && !loading) {
