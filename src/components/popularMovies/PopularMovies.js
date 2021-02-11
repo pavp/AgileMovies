@@ -4,8 +4,10 @@ import styles from "./styles";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMoviesPopular } from "@store/actions/movies";
 import NowMovies from "@components/nowMovies/NowMovies";
+import { useNavigation } from "@react-navigation/native";
 
 const PopularMovies = () => {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const [firsTime, setFirstTime] = useState(true);
   const imageBaseUrl = useSelector((state) => state.movies.popular.baseUrl);
@@ -20,18 +22,18 @@ const PopularMovies = () => {
     }
   }, [movies]);
 
-  const onClickHanler = () => {};
+  const onClickHanler = (item) => {
+    navigation.navigate("Detail", { movie: item });
+  };
 
   const renderItem = ({ item }) => (
-    <Pressable style={styles.pressable} onPress={onClickHanler}>
+    <Pressable style={styles.pressable} onPress={() => onClickHanler(item)}>
       <Image
         source={{ uri: imageBaseUrl + item.backdrop_path }}
         style={styles.image}
       />
 
-      <Text style={styles.titleItem}>
-        {item.original_title + item.original_title}
-      </Text>
+      <Text style={styles.titleItem}>{item.original_title}</Text>
     </Pressable>
   );
 

@@ -74,7 +74,6 @@ const interceptorResponse = (response, store) => {
 
 const handleErrorResponse = async (error, store) => {
   if (error.config && error.response?.status === 401) {
-    console.log("ajaaa error 401");
     return new Promise((resolve, reject) => {
       refreshTokenService(
         store.getState().auth?.payload.refresh_token,

@@ -39,6 +39,22 @@ export const fetchMoviesNow = createAsyncThunk(
   }
 );
 
+export const fetchActors = createAsyncThunk(
+  "movies/fetchActors",
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await API.movies.getActors(id);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response && error.response.data
+          ? error.response.data.message
+          : error.message.replace(" ", "")
+      );
+    }
+  }
+);
+
 export const initialState = {
   popular: {
     loading: false,
@@ -58,23 +74,23 @@ export const initialState = {
     skip: 1,
     endReached: false,
   },
+  actors: {
+    loading: false,
+    error: undefined,
+    status: "idle",
+    actors: [],
+  },
 };
 
 export const authSlice = createSlice({
   name: "movies",
   initialState,
   reducers: {
-    cleanStateLoading: (state) => {
-      state.login.loading = false;
-      state.login.error = "";
-      state.login.status = "idle";
-    },
-    logOut: (state) => {
-      state.payload = undefined;
-      state.user = undefined;
-      state.login.loading = false;
-      state.login.error = "";
-      state.login.status = "idle";
+    cleanActors: (state) => {
+      state.actors.loading = false;
+      state.actors.error = "";
+      state.actors.status = "idle";
+      state.actors.actors = [];
     },
   },
   extraReducers: {
@@ -112,9 +128,23 @@ export const authSlice = createSlice({
       state.now.skip = state.now.skip + 1;
       state.now.endReached = action.payload.length === 0;
     },
+    [fetchActors.pending]: (state) => {
+      state.actors.loading = true;
+      state.actors.status = "loading";
+    },
+    [fetchActors.rejected]: (state, action) => {
+      state.actors.loading = false;
+      state.actors.status = "failed";
+      state.actors.error = action.payload;
+    },
+    [fetchActors.fulfilled]: (state, action) => {
+      state.actors.loading = false;
+      state.actors.status = "succeeded";
+      state.actors.actors = action.payload.data;
+    },
   },
 });
 
-export const { cleanStateLoading, logOut } = authSlice.actions;
+export const { cleanActors } = authSlice.actions;
 
 export default authSlice.reducer;

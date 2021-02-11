@@ -99,7 +99,6 @@ export const authSlice = createSlice({
       state.profile.error = action.payload;
     },
     [fetchAuthProfile.fulfilled]: (state, action) => {
-      console.log(action.payload.data);
       state.profile.loading = false;
       state.profile.status = "succeeded";
       state.user = action.payload.data;
