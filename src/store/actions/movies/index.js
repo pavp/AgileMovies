@@ -44,13 +44,19 @@ export const initialState = {
     loading: false,
     error: undefined,
     status: "idle",
-    moviesPopular: [],
+    baseUrl: "",
+    movies: [],
+    skip: 1,
+    endReached: false,
   },
   now: {
     loading: false,
     error: undefined,
     status: "idle",
-    moviesNow: [],
+    baseUrl: "",
+    movies: [],
+    skip: 1,
+    endReached: false,
   },
 };
 
@@ -84,7 +90,10 @@ export const authSlice = createSlice({
     [fetchMoviesPopular.fulfilled]: (state, action) => {
       state.popular.loading = false;
       state.popular.status = "succeeded";
-      state.popular.moviesPopular = action.payload;
+      state.popular.baseUrl = action.payload.imageBaseUrl;
+      state.popular.movies = state.popular.movies.concat(action.payload.data);
+      state.popular.skip = state.popular.skip + 1;
+      state.popular.endReached = action.payload.length === 0;
     },
     [fetchMoviesNow.pending]: (state) => {
       state.now.loading = true;
@@ -98,7 +107,10 @@ export const authSlice = createSlice({
     [fetchMoviesNow.fulfilled]: (state, action) => {
       state.now.loading = false;
       state.now.status = "succeeded";
-      state.now.moviesNow = action.payload;
+      state.now.baseUrl = action.payload.imageBaseUrl;
+      state.now.movies = state.now.movies.concat(action.payload.data);
+      state.now.skip = state.now.skip + 1;
+      state.now.endReached = action.payload.length === 0;
     },
   },
 });

@@ -1,19 +1,31 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FlatList, Image, View, Pressable, Text } from "react-native";
 import styles from "./styles";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchMoviesPopular } from "@store/actions/movies";
+import NowMovies from "@components/nowMovies/NowMovies";
 
-const NowMovies = () => {
-  const moviesPopular = useSelector(
-    (state) => state.movies.popular.moviesPopular
-  );
+const PopularMovies = () => {
+  const dispatch = useDispatch();
+  const [firsTime, setFirstTime] = useState(true);
+  const imageBaseUrl = useSelector((state) => state.movies.popular.baseUrl);
+  const movies = useSelector((state) => state.movies.popular.movies);
+  const loading = useSelector((state) => state.movies.popular.loading);
+  const endReached = useSelector((state) => state.movies.popular.endReached);
+  const skip = useSelector((state) => state.movies.popular.skip);
+
+  useEffect(() => {
+    if (movies.length) {
+      setFirstTime(false);
+    }
+  }, [movies]);
 
   const onClickHanler = () => {};
 
   const renderItem = ({ item }) => (
     <Pressable style={styles.pressable} onPress={onClickHanler}>
       <Image
-        source={{ uri: moviesPopular.imageBaseUrl + item.backdrop_path }}
+        source={{ uri: imageBaseUrl + item.backdrop_path }}
         style={styles.image}
       />
 
@@ -23,19 +35,31 @@ const NowMovies = () => {
     </Pressable>
   );
 
+  const loadMoreData = () => {
+    if (!endReached && !firsTime && !loading) {
+      dispatch(fetchMoviesPopular({ page: skip }));
+    }
+  };
+
   return (
     <View style={styles.item}>
-      <Text style={styles.title}>Películas más populares</Text>
       <FlatList
-        data={moviesPopular.data}
+        data={movies}
         renderItem={renderItem}
         numColumns={2}
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={styles.contentContainer}
+        onEndReached={loadMoreData}
+        onEndReachedThreshold={1}
+        ListHeaderComponent={
+          <View>
+            <NowMovies />
+          </View>
+        }
       />
     </View>
   );
 };
 
-export default NowMovies;
+export default PopularMovies;
