@@ -33,7 +33,7 @@ yarn install ## install all dependencies for the project
 ### iOS
 In the project directory, run:
 ```bash
-yarn run ios 
+yarn ios 
 ```
 
 _Runs the app in the development mode._
@@ -42,7 +42,7 @@ _Runs the app in the development mode._
 
 In the project directory, run:
 ```bash
-yarn run android
+yarn android
 ```
 
 _Runs the app in the development mode._
